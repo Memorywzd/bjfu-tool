@@ -1,5 +1,6 @@
 import base64
 import configparser
+import os
 import re
 import datetime
 
@@ -8,8 +9,9 @@ import requests
 onLoadUrl = 'http://10.1.1.10/'
 connectUrl = 'http://10.1.1.10:801/eportal/portal/custom/auth'
 
+base_dir = os.path.dirname(os.path.abspath(__file__))
 userConfig = configparser.ConfigParser()
-userConfig.read('config.ini')
+userConfig.read(base_dir + '/config.ini')
 user_name = userConfig.get('user', 'account')
 user_passwd = userConfig.get('user', 'password')
 
