@@ -6,7 +6,7 @@ import datetime
 
 import requests
 
-import notify
+from notify import send_message
 
 onLoadUrl = 'http://10.1.1.10/'
 connectUrl = 'http://10.1.1.10:801/eportal/portal/custom/auth'
@@ -57,10 +57,10 @@ if __name__ == "__main__":
         errLog = open(base_dir + "/error.log", "a+")
         connect_message += '联网失败！'
         errLog.write(connect_message)
-        notify.send_message(connect_message)
+        send_message(connect_message)
         errLog.close()
         exit(-1)
     else:
         connect_message += '联网成功！'
-        notify.send_message(connect_message)
+        send_message(connect_message)
 
