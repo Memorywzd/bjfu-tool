@@ -6,6 +6,8 @@ import datetime
 
 import requests
 
+import notify
+
 onLoadUrl = 'http://10.1.1.10/'
 connectUrl = 'http://10.1.1.10:801/eportal/portal/custom/auth'
 
@@ -50,9 +52,15 @@ def connect():
 
 
 if __name__ == "__main__":
+    connect_message = '自动联网脚本：' + '\n'
     if connect() != 0:
-        errLog = open("error.log", "a+")
-        errLog.write(run_time + '\n' + 'Connection failure')
+        errLog = open(base_dir + "/error.log", "a+")
+        connect_message += '联网失败！'
+        errLog.write(connect_message)
+        notify.send_message(connect_message)
         errLog.close()
         exit(-1)
+    else:
+        connect_message += '联网成功！'
+        notify.send_message(connect_message)
 
