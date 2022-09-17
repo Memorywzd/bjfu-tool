@@ -1,10 +1,8 @@
 # bjfu自开发脚本
 
----
-
 #### 关于配置
 填写`config.ini`，在`user`一栏中填写校园网登录
-的账号和密码
+的账号和密码  
 `qqbot`一栏是[go-cqhttp](https://github.com/Mrs4s/go-cqhttp)
 的自动通知配置文件，按需填写
 
