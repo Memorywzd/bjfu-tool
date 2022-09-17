@@ -46,7 +46,7 @@ def get_remain_value():
 
     params = {
         'factorycode': 'E028',
-        'roomid': '1ebf6f52b5f449709f6946e8e4e715c7'
+        'roomid': room_id
     }
 
     eb = ElectricityBill()
