@@ -1,13 +1,9 @@
 import configparser
 import os
-from ddddocr import DdddOcr
 
 import requests
 
 from notify import send_message
-
-payUrl = 'http://pay.bjfu.edu.cn/'
-valueAction = 'querySydl'
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
 billConfig = configparser.ConfigParser()
@@ -28,29 +24,26 @@ class ElectricityBill:
 
 
 def get_remain_value():
-    imageUrl = 'http://pay.bjfu.edu.cn/authImage'
-    loginUrl = 'http://pay.bjfu.edu.cn/fontuserLogin'
+    loginUrl = 'http://pay.bjfu.edu.cn/MNetWorkUI/userLoginAction!mobileUserLogin.action'
+    queryUrl = 'http://pay.bjfu.edu.cn/MNetWorkUI/elecManage!querySydlOfE028'
     if room_id == '':
         get_room_id = ''
 
     s = requests.sessions.Session()
-    codeImage = s.get(imageUrl)
-    code = DdddOcr().classification(codeImage.content)
 
-    data = {
+    login_data = {
         'nickName': eAccount,
         'password': ePasswd,
-        'checkCode': str(code)
     }
-    s.post(url=loginUrl, data=data)
+    s.post(url=loginUrl, data=login_data)
 
-    params = {
+    query_data = {
         'factorycode': 'E028',
         'roomid': room_id
     }
 
     eb = ElectricityBill()
-    value = s.get(url=payUrl + valueAction, params=params)
+    value = s.post(url=queryUrl, data=query_data)
     if value.status_code != 200:
         eb.status = -1
     data = value.json()
@@ -67,6 +60,6 @@ if __name__ == '__main__':
         ebill_message += '访问电费监控接口失败'
         send_message(ebill_message)
     else:
-        if float(eq.remain) <= 10:
-            ebill_message += '截至' + eq.date + '\n剩余' + eq.remain + '度电，电费已不足10度，请尽快缴费！'
+        if float(eq.remain) <= 20:
+            ebill_message += '截至' + eq.date + '\n剩余' + eq.remain + '度电，电费已不足20度，请尽快缴费！'
             send_message(ebill_message)

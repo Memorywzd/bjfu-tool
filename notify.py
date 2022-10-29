@@ -1,7 +1,6 @@
 import configparser
 import datetime
 import os
-
 import requests
 
 base_dir = os.path.dirname(os.path.abspath(__file__))

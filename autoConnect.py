@@ -2,8 +2,6 @@ import base64
 import configparser
 import os
 import re
-import datetime
-
 import requests
 
 from notify import send_message
@@ -16,8 +14,6 @@ userConfig = configparser.ConfigParser()
 userConfig.read(base_dir + '/config.ini')
 user_name = userConfig.get('user', 'account')
 user_passwd = userConfig.get('user', 'password')
-
-run_time = datetime.datetime.now().strftime("%m-%d %H:%M:%S")
 
 
 def connect():
@@ -45,7 +41,7 @@ def connect():
 
         else:
             print("already connected")
-            return 0
+            return -2
 
     except:
         return -1
@@ -53,13 +49,17 @@ def connect():
 
 if __name__ == "__main__":
     connect_message = '自动联网脚本：' + '\n'
-    if connect() != 0:
+    status = connect()
+    if  status == -1:
         errLog = open(base_dir + "/error.log", "a+")
         connect_message += '联网失败！'
         errLog.write(connect_message)
         send_message(connect_message)
         errLog.close()
         exit(-1)
+    elif status == -2:
+        connect_message += '已经联网！'
+        send_message(connect_message)
     else:
         connect_message += '联网成功！'
         send_message(connect_message)
